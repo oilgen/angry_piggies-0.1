@@ -55,6 +55,11 @@ jobs:
           rm -rf .buildozer
         working-directory: ./Angry Piggies
 
+      - name: Force update python-for-android
+        run: |
+          rm -rf .buildozer/android/platform/python-for-android
+        working-directory: ./Angry Piggies
+        
       - name: Build APK with Buildozer
         run: |
           echo y | buildozer -v android debug
