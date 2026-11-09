@@ -5,7 +5,7 @@ package.domain = org.example
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas,sql,db
 version = 1.0
-requirements = python3,kivy,jnius
+requirements = python3,kivy,jnius>=1.4.0
 orientation = landscape
 fullscreen = 1
 
@@ -14,3 +14,4 @@ android.minapi = 21
 android.ndk = 25b
 android.archs = arm64-v8a, armeabi-v7a
 android.accept_sdk_license = True
+p4a.branch = develop
