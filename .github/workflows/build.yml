@@ -2,7 +2,7 @@ name: Build APK
 
 on:
   push:
-    branches: [ "main" ] 
+    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -12,10 +12,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Show project files
+        run: |
+          echo "Текущая папка:"
+          pwd
+          echo "Файлы в текущей папке:"
+          ls -la
+          echo "Файлы в папке проекта:"
+          ls -la ./Angry Piggies || echo "Папка не найдена!"
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9' 
+          python-version: '3.9'
 
       - name: Install system dependencies
         run: |
@@ -29,13 +38,12 @@ jobs:
 
       - name: Build with Buildozer
         run: |
-          # Добавляем путь к установленным пакетам в PATH
           export PATH=$PATH:~/.local/bin
-          # Запускаем сборку
           buildozer -v android debug
+        working-directory: ./Angry Piggies
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: package
-          path: bin/*.apk
+          path: Angry Piggies/bin/*.apk
