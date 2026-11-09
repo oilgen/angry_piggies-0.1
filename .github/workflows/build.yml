@@ -21,7 +21,7 @@ jobs:
           options: -v ${{ github.workspace }}:/home/user/hostcwd
           run: |
             cd "/home/user/hostcwd/Angry Piggies"
-            echo y | buildozer android debug
+            yes | buildozer android debug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
