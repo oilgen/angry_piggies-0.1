@@ -14,6 +14,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Clean Buildozer cache
+        run: |
+          rm -rf "Angry Piggies/.buildozer"
+          rm -rf "Angry Piggies/bin"
+
       - name: Build with Buildozer Docker
         uses: addnab/docker-run-action@v3
         with:
