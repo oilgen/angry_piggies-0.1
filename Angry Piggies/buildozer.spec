@@ -18,7 +18,7 @@ android.numeric_version = 1
 android.enable_androidx = True
 android.permissions = INTERNET
 android.copy_libs = 1
-p4a.branch = develop
+p4a.branch = master
 
 [buildozer]
 log_level = 2
