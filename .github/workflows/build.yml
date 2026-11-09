@@ -27,12 +27,6 @@ jobs:
           pip install --user --upgrade buildozer
           pip install --user --upgrade Cython==0.29.36 virtualenv
 
-      - name: Clean Buildozer cache
-        run: |
-          export PATH=$PATH:~/.local/bin
-          buildozer android clean
-        working-directory: ./Angry Piggies
-
       - name: Build with Buildozer
         run: |
           export PATH=$PATH:~/.local/bin
