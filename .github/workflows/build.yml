@@ -12,19 +12,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Show project files
-        run: |
-          echo "Текущая папка:"
-          pwd
-          echo "Файлы в текущей папке:"
-          ls -la
-          echo "Файлы в папке проекта:"
-          ls -la ./Angry Piggies || echo "Папка не найдена!"
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.11'
 
       - name: Install system dependencies
         run: |
@@ -34,7 +25,13 @@ jobs:
       - name: Install Buildozer and Cython
         run: |
           pip install --user --upgrade buildozer
-          pip install --user --upgrade Cython==0.29.34 virtualenv
+          pip install --user --upgrade Cython==0.29.36 virtualenv
+
+      - name: Clean Buildozer cache
+        run: |
+          export PATH=$PATH:~/.local/bin
+          buildozer android clean
+        working-directory: ./Angry Piggies
 
       - name: Build with Buildozer
         run: |
