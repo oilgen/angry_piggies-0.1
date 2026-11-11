@@ -14,6 +14,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -22,7 +28,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y git zip unzip libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev autoconf libtool pkg-config zlib1g-dev automake openjdk-17-jdk
+          sudo apt-get install -y git zip unzip libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev autoconf libtool pkg-config zlib1g-dev automake
 
       - name: Install Buildozer
         run: |
@@ -30,13 +36,19 @@ jobs:
           pip install git+https://github.com/kivy/buildozer.git@master
           pip install cython==0.29.33 virtualenv
 
+      - name: Show folders (для проверки)
+        run: ls -la
+
       - name: Build APK
         run: |
-          cd "AngryPiggies" # <-- Убедитесь, что папка называется именно так (без пробела)
+          # Заходим в папку с пробелом (обязательно в кавычках!)
+          cd "Angry Piggies"
+          # Запускаем сборку с максимальным логом
           buildozer -v android debug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: package
-          path: AngryPiggies/bin/*.apk
+          # Путь тоже в кавычках, так как есть пробел
+          path: "Angry Piggies/bin/*.apk"
