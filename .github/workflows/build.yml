@@ -25,23 +25,22 @@ jobs:
           image: kivy/buildozer:latest
           options: -v ${{ github.workspace }}:/home/user/hostcwd
           run: |
-            # Копируем проект в папку без пробелов
             cp -r "/home/user/hostcwd/Angry Piggies" /home/user/project
             cd /home/user/project
-            
-            # Собираем
             yes | buildozer android debug
             
-            # ВАЖНО: Копируем готовый APK обратно в папку GitHub
+            # Копируем ВСЕ apk файлы из папки bin контейнера в папку проекта
             mkdir -p "/home/user/hostcwd/Angry Piggies/bin"
             cp bin/*.apk "/home/user/hostcwd/Angry Piggies/bin/" || true
+            # На всякий случай копируем и в корень проекта
+            cp bin/*.apk "/home/user/hostcwd/" || true
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: package
-          # Ищем APK во всех возможных местах, где его может создать Buildozer
           path: |
             AngryPiggies/bin/*.apk
             Angry Piggies/bin/*.apk
-            **/bin/*.apk
+            **/*.apk
+            /home/user/project/bin/*.apk
