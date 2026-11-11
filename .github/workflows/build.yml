@@ -27,13 +27,17 @@ jobs:
           run: |
             cp -r "/home/user/hostcwd/Angry Piggies" /home/user/project
             cd /home/user/project
-            yes | buildozer android debug
             
-            # Копируем ВСЕ apk файлы из папки bin контейнера в папку проекта
+            # Даем Buildozer команду с максимальным логом
+            # (log_level=2 в buildozer.spec уже должен быть, но на всякий случай)
+            yes | buildozer -v android debug
+            
+            # Проверяем, создался ли APK в папке bin
+            ls -la bin/
+            
+            # Копируем ВСЕ apk файлы (если они есть) обратно в папку проекта
             mkdir -p "/home/user/hostcwd/Angry Piggies/bin"
-            cp bin/*.apk "/home/user/hostcwd/Angry Piggies/bin/" || true
-            # На всякий случай копируем и в корень проекта
-            cp bin/*.apk "/home/user/hostcwd/" || true
+            cp bin/*.apk "/home/user/hostcwd/Angry Piggies/bin/" || echo "APK НЕ НАЙДЕН В КОНТЕЙНЕРЕ!"
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
