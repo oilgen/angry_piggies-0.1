@@ -25,12 +25,14 @@ jobs:
           image: kivy/buildozer:latest
           options: -v ${{ github.workspace }}:/home/user/hostcwd
           run: |
-            # Копируем в папку без пробелов
+            # Копируем проект в папку без пробелов
             cp -r "/home/user/hostcwd/Angry Piggies" /home/user/project
             cd /home/user/project
+            
+            # Собираем
             yes | buildozer android debug
             
-            # ВАЖНО: Копируем готовый APK обратно на GitHub-раннер
+            # ВАЖНО: Копируем готовый APK обратно в папку GitHub
             mkdir -p "/home/user/hostcwd/Angry Piggies/bin"
             cp bin/*.apk "/home/user/hostcwd/Angry Piggies/bin/" || true
 
