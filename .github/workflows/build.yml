@@ -14,41 +14,51 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # 1. Установка Java 17 (нужна для Android SDK)
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '17'
 
+      # 2. Установка Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
+      # 3. Системные зависимости для сборки Kivy
       - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y git zip unzip libncurses5-dev libncursesw5-dev cmake libffi-dev libssl-dev autoconf libtool pkg-config zlib1g-dev automake
 
+      # 4. Установка Buildozer (с GitHub, чтобы была поддержка AAB) и Cython
       - name: Install Buildozer
         run: |
           python -m pip install --upgrade pip setuptools wheel
           pip install git+https://github.com/kivy/buildozer.git@master
           pip install cython==0.29.33 virtualenv
 
-      - name: Show folders (для проверки)
+      # 5. Очистка старого кэша Buildozer (если он был)
+      - name: Clean Buildozer cache
+        run: |
+          rm -rf "Angry Piggies/.buildozer"
+          rm -rf ~/.buildozer
+
+      # 6. Показываем файлы для проверки структуры
+      - name: Show folders
         run: ls -la
 
+      # 7. Сборка APK (yes | принимает лицензии SDK автоматически)
       - name: Build APK
         run: |
-          # Заходим в папку с пробелом (обязательно в кавычках!)
           cd "Angry Piggies"
-          # Запускаем сборку с максимальным логом
-          buildozer -v android debug
+          yes | buildozer -v android debug
 
+      # 8. Загрузка готового APK
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: package
-          # Путь тоже в кавычках, так как есть пробел
           path: "Angry Piggies/bin/*.apk"
